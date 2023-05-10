@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kbstar.mapper.SalesMapper">
+<!--  성별 기준 월별 매출액 가져오기.  -->
+    <select id="search" resultType="sales">
+        select TO_NUMBER(TO_CHAR(rdate, 'MM')) AS month, gender, SUM(price) AS total
+        from sales
+        group by TO_NUMBER(TO_CHAR(rdate, 'MM')), gender
+        order by 1
+    </select>
+
+    <select id="selectall" resultType="sales">
+        SELECT * FROM sales
+    </select>
+<!-- 화면에서 입력받은 string값을 날짜로 변환하여 테이블에 넣는 방법! : TO_DATE(#{rdate}, 'YYYY-MM-DD')   -->
+    <insert id="insert" parameterType="sales">
+        INSERT INTO sales VALUES (TO_DATE(#{rdate}, 'YYYY-MM-DD'),#{price},#{gender})
+    </insert>
+
+</mapper>
